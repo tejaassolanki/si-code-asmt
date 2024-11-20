@@ -15,8 +15,6 @@ if __name__ == "__main__":
     # Load data
     ###########################################################################
 
-    dataset = SingleProcessDataset(DATA_DIR / "3d_data.csv")
-
     dataset = MultiProcessDataset(DATA_DIR / "3d_data.csv")
     dataloader = DataLoader(
         dataset, batch_size=32, shuffle=True, num_workers=2, drop_last=True
