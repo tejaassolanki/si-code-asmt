@@ -1,4 +1,4 @@
-import  torch
+import torch
 from torch.utils.data import DataLoader, random_split
 from provided.network import SimpleNeuralNetwork
 from provided.loader import MultiProcessDataset
@@ -10,36 +10,39 @@ from provided.constants import DATA_DIR
 if __name__ == "__main__":
 
     print("Running main.py...")
-    exit(0)
 
     ###########################################################################
     # Load data
     ###########################################################################
 
-    dataset = MultiProcessDataset(DATA_DIR / '3d_data.csv')
-    dataloader = DataLoader(dataset, batch_size=32, shuffle=True, num_workers=2, drop_last=True)
+    dataset = MultiProcessDataset(DATA_DIR / "3d_data.csv")
+    dataloader = DataLoader(
+        dataset, batch_size=32, shuffle=True, num_workers=2, drop_last=True
+    )
+    exit(0)
 
     ###########################################################################
     # Split data into training and test sets
     ###########################################################################
 
-    torch.manual_seed(42) # Set the seed for reproducibility
-    training_size = int(0.8 * len(dataset)) # 80% of data for training
-    test_size = len(dataset) - training_size # 20% of data for testing
+    torch.manual_seed(42)  # Set the seed for reproducibility
+    training_size = int(0.8 * len(dataset))  # 80% of data for training
+    test_size = len(dataset) - training_size  # 20% of data for testing
     train_dataset, test_dataset = random_split(dataset, [training_size, test_size])
 
-    train_dataloader = DataLoader(train_dataset, batch_size=32, shuffle=True, num_workers=2, drop_last=True)
-    test_dataloader = DataLoader(test_dataset, batch_size=32, shuffle=True, num_workers=2, drop_last=True)
+    train_dataloader = DataLoader(
+        train_dataset, batch_size=32, shuffle=True, num_workers=2, drop_last=True
+    )
+    test_dataloader = DataLoader(
+        test_dataset, batch_size=32, shuffle=True, num_workers=2, drop_last=True
+    )
 
     ###########################################################################
     # Train the network
     ###########################################################################
 
     network = SimpleNeuralNetwork(
-        batch_size=32,
-        input_dim=3,
-        hidden_sizes=[4, 4],
-        output_size=1
+        batch_size=32, input_dim=3, hidden_sizes=[4, 4], output_size=1
     )
 
     network.train(train_dataloader, epochs=2, batch_size=32, learning_rate=0.01)
@@ -52,7 +55,7 @@ if __name__ == "__main__":
 
     print(f"Training samples: {len(train_dataset)}")
     print(f"Test samples: {len(test_dataset)}")
-    print(f'Final accuracy: {final_accuracy:.2f}%')
+    print(f"Final accuracy: {final_accuracy:.2f}%")
 
     ###########################################################################
     # Bound propagation
@@ -62,7 +65,7 @@ if __name__ == "__main__":
     first_batch = next(iter(test_dataloader))
     X_batch, labels_batch = first_batch
 
-    # Define an epsilon to add (upper) / subtract (lower) 
+    # Define an epsilon to add (upper) / subtract (lower)
     # from the input features
     eps = 0.1
 
