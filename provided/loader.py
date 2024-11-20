@@ -16,7 +16,7 @@ class SingleProcessDataset(Dataset):
 
         # Calculate total load time
         self.load_time = time.time() - start_time
-        print(f"Dataset loading completed in {self.load_time:.2f} seconds")
+        print(f"Dataset loading completed in {self.load_time:.6f} seconds")
 
     def __len__(self):
         return len(self.features)
@@ -26,7 +26,14 @@ class SingleProcessDataset(Dataset):
 
 
 class MultiProcessDataset(SingleProcessDataset):
-    def __init__(self, csv_file):
+    """
+    Class to process a dataset using multiple processors
+    """
+
+    def __init__(self, csv_file, *, chunk_size: int = 1000):
+        """
+        Constructor to load and process a CSV file using multiprocessing
+        """
         start_time = time.time()
         print("Loading data using multi process...")
 
@@ -34,8 +41,6 @@ class MultiProcessDataset(SingleProcessDataset):
 
         # Number of processes to use
         num_processes = cpu_count()
-
-        chunk_size = 1000  # based on dataset
 
         # Split the CSV into chunks
         chunks = pd.read_csv(csv_file, chunksize=chunk_size)
@@ -52,9 +57,12 @@ class MultiProcessDataset(SingleProcessDataset):
 
         # Calculate total load time
         self.load_time = time.time() - start_time
-        print(f"Dataset loading completed in {self.load_time:.2f} seconds")
+        print(f"Dataset loading completed in {self.load_time:.6f} seconds")
 
-    def _load_chunk(self, chunk):
+    def _load_chunk(self, chunk: pd.DataFrame):
+        """
+        Helper method to process each chunk of data
+        """
         chunk_features = torch.FloatTensor(chunk[["x1", "x2", "x3"]].values)
         chunk_labels = torch.LongTensor(chunk["label"].values)
         return chunk_features, chunk_labels
