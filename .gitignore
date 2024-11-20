@@ -1,3 +1,11 @@
+# Mac OS files
+**/.DS_Store
+
+# Dataset files
+
+./gradient-eval-task/provided/3d_data_plane.csv
+./gradient-eval-task/provided/3d_data.csv
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
