@@ -8,10 +8,12 @@ from tqdm import tqdm
 
 
 class SimpleNeuralNetwork:
-    def __init__(self, input_dim: int, hidden_sizes: List[int], output_size: int) -> None:
+    def __init__(
+        self, input_dim: int, hidden_sizes: List[int], output_size: int
+    ) -> None:
         """
         Initialize weights and biases for the neural network layers.
-        
+
         input_size: The number of input features.
         hidden_sizes: A list of integers representing the size of each hidden layer.
         output_size: The number of output neurons.
@@ -47,17 +49,32 @@ class SimpleNeuralNetwork:
     def forward(self, X) -> np.ndarray:
         """
         Perform a forward pass through the network.
-        
+
         X: The input data as a NumPy array. Example: X.shape = (m, n)
         Returns the output of the network after the forward pass.
         """
         self.X = X
-        self.Z1 = einops.einsum(self.W1, X, "hidden features, batches features -> batches hidden") + self.b1
-        self.Z2 = einops.einsum(self.W2, self.Z1, "hidden features, batches features -> batches hidden") + self.b2
-        self.output = einops.einsum(self.W3, self.Z2, "hidden features, batches features -> batches hidden") + self.b3
+        self.Z1 = (
+            einops.einsum(
+                self.W1, X, "hidden features, batches features -> batches hidden"
+            )
+            + self.b1
+        )
+        self.Z2 = (
+            einops.einsum(
+                self.W2, self.Z1, "hidden features, batches features -> batches hidden"
+            )
+            + self.b2
+        )
+        self.output = (
+            einops.einsum(
+                self.W3, self.Z2, "hidden features, batches features -> batches hidden"
+            )
+            + self.b3
+        )
 
         return self.output
-    
+
     def calculate_accuracy(self, dataloader: DataLoader) -> float:
         """
         Calculate the accuracy of the network on a given dataloader.
@@ -73,11 +90,11 @@ class SimpleNeuralNetwork:
         total = 0
 
         # Set network to evaluation mode (if it supports eval)
-        if hasattr(self, 'eval'):
+        if hasattr(self, "eval"):
             self.eval()
 
         with torch.no_grad():  # No need to track gradients for evaluation
-            for X, labels in tqdm(dataloader, desc='Calculating accuracy'):
+            for X, labels in tqdm(dataloader, desc="Calculating accuracy"):
                 # Forward pass
                 outputs = self.forward(X)
 
@@ -90,8 +107,14 @@ class SimpleNeuralNetwork:
 
         accuracy = (correct / total) * 100
         return accuracy.item()
-    
-    def train(self, train_dataloader: DataLoader, epochs: int=2, batch_size: int=32, learning_rate: float=0.01) -> List[float]:
+
+    def train(
+        self,
+        train_dataloader: DataLoader,
+        epochs: int = 2,
+        batch_size: int = 32,
+        learning_rate: float = 0.01,
+    ) -> List[float]:
         """
         Train the neural network.
 
@@ -111,15 +134,17 @@ class SimpleNeuralNetwork:
             epoch_losses = []
 
             # Use tqdm for progress bar
-            with tqdm(train_dataloader, desc=f'Epoch {epoch + 1}/{epochs}') as pbar:
+            with tqdm(train_dataloader, desc=f"Epoch {epoch + 1}/{epochs}") as pbar:
                 for _, (X, labels) in enumerate(pbar):
 
                     if X.shape[0] != batch_size:
-                        raise ValueError(f'Expected batch size {batch_size}, got {X.shape[0]}')
+                        raise ValueError(
+                            f"Expected batch size {batch_size}, got {X.shape[0]}"
+                        )
 
                     # Reshape to (batch_size, 1)
                     X = X.float()
-                    Y = labels.float().reshape(-1, 1)  
+                    Y = labels.float().reshape(-1, 1)
 
                     # Forward pass
                     output = self.forward(X)
@@ -132,14 +157,16 @@ class SimpleNeuralNetwork:
                     self.backward(Y, learning_rate)
 
                     # Update progress bar with current loss
-                    pbar.set_postfix({'loss': f'{loss:.4f}'})
+                    pbar.set_postfix({"loss": f"{loss:.4f}"})
 
             # Average loss for this epoch
             avg_loss = np.mean(epoch_losses)
             losses.append(avg_loss)
-            print(f'\nEpoch {epoch + 1} average loss: {avg_loss:.4f}')
-    
-    def backward(self, Y: torch.Tensor, learning_rate: float = 0.01) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
+            print(f"\nEpoch {epoch + 1} average loss: {avg_loss:.4f}")
+
+    def backward(
+        self, Y: torch.Tensor, learning_rate: float = 0.01
+    ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
         """
         Perform a backward pass to compute gradients and update weights.
 
@@ -156,7 +183,10 @@ class SimpleNeuralNetwork:
 
         ########### YOUR CODE HERE ############
 
-        pass
+        dW3 = einops.einsum(
+            dZ3, self.Z2, "batches output, batches hidden -> output hidden"
+        )
+        db3 = torch.mean(dZ3, dim=0, keepdim=True)
 
         # Update weights and biases
         self.W3 -= 0
@@ -167,4 +197,3 @@ class SimpleNeuralNetwork:
         self.b1 -= 0
 
         ########### END YOUR CODE  ############
-
