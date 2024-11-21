@@ -19,7 +19,6 @@ if __name__ == "__main__":
     dataloader = DataLoader(
         dataset, batch_size=32, shuffle=True, num_workers=2, drop_last=True
     )
-    exit(0)
 
     ###########################################################################
     # Split data into training and test sets
@@ -56,6 +55,8 @@ if __name__ == "__main__":
     print(f"Training samples: {len(train_dataset)}")
     print(f"Test samples: {len(test_dataset)}")
     print(f"Final accuracy: {final_accuracy:.2f}%")
+
+    exit(0)
 
     ###########################################################################
     # Bound propagation
