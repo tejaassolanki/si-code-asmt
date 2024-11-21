@@ -11,6 +11,8 @@ Task 1. Loading Data with Multi-Processing
 - Tried to understand modin and polars implementations but took quite some time
 - Knew about chunksize in pandas just went through the documentation again for syntax and confirmations
 - Skimmed through a few blogs and documentation of multiprocessing
+- In terms of testing, unit tests with pytest could have been written to ensure proper working of the methods. Different sorts of data (can be mocked) as edge cases could be used to verify the working.
+- Integration tests (to check for integrations) and performance testing (compare load times with single thread) can also be carried out.
 
 ---
 
@@ -21,6 +23,7 @@ Task 2. Neural Network Implementation
 - Struggled to do the matrix multiplication and tried understing einsum instead of transpose and matmul
 - Used AI for understanding einsum and spent more time understanding gradient calculations
 - Had backpropagation in bachelor's with manual calculations on paper, hence was comfortable doing on paper to avoid confusions
+- Unit tests with pytest can be written with a set of inputs and its corresponding outputs that can be asserted
 
 ---
 
@@ -29,5 +32,5 @@ Task 3. Evaluating the Neural Network Output Bounds
 - The input tensor should be sliced to get the lower bounds and upper bounds separately
 - Compute the lower and upper bounds and then combine into a single tensor
 - The solution proposed by me seems way too easy which I am in doubt whether I have understood the problem
-- The solution more or less has to consider +ve and -ve values to calulcate upper and lower bounds
-
+- The solution more or less I believe should consider +ve and -ve values to calculate upper and lower bounds
+- Similar to task 2, a fixed set of inputs (can include extreme cases) and its corresponding outputs can be asserted with unit tests
