@@ -200,12 +200,23 @@ class SimpleNeuralNetwork:
         )
         db2 = torch.mean(dA2, dim=0, keepdim=True)
 
+        # Gradient of loss wrt to A1
+        dA1 = einops.einsum(
+            self.W2, dA2, "output hidden, batches output -> batches hidden"
+        )
+
+        # Gradients for W1 and b1
+        dW1 = einops.einsum(
+            dA1, self.X, "batches output, batches hidden -> output hidden"
+        )
+        db1 = torch.mean(dA1, dim=0, keepdim=True)
+
         # Update weights and biases
         self.W3 -= learning_rate * dW3
         self.b3 -= learning_rate * db3
         self.W2 -= learning_rate * dW2
         self.b2 -= learning_rate * db2
-        # self.W1 -= learning_rate * dW1
-        # self.b1 -= learning_rate * db1
+        self.W1 -= learning_rate * dW1
+        self.b1 -= learning_rate * db1
 
         ########### END YOUR CODE  ############
