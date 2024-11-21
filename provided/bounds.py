@@ -82,6 +82,7 @@ class IntervalBoundPropagation:
         input_upper = input_bounds[:, :, 1]  # (batch_size, input_dim)
 
         # Compute the linear pass
+        # Can also use einops.einsum() in place of torch.einsum()
         lower_bound = torch.einsum("bi,oi->bo", input_lower, weights) + bias
         upper_bound = torch.einsum("bi,oi->bo", input_upper, weights) + bias
 
