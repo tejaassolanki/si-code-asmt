@@ -33,4 +33,5 @@ Task 3. Evaluating the Neural Network Output Bounds
 - Compute the lower and upper bounds and then combine into a single tensor
 - The solution proposed by me seems way too easy which I am in doubt whether I have understood the problem
 - The solution more or less I believe should consider +ve and -ve values to calculate upper and lower bounds
+- Also, the proposed solution uses torch.einsum() which is similar to einops.einsum(). Uniformity should be preserved on which one to use as the latter is used for task 2.
 - Similar to task 2, a fixed set of inputs (can include extreme cases) and its corresponding outputs can be asserted with unit tests
