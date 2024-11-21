@@ -16,6 +16,11 @@ Task 1. Loading Data with Multi-Processing
 
 Task 2. Neural Network Implementation
 
+- Revised how backpropagation works and wrote a few formulas (with chain rule) on paper to get comfortable
+- Went through a couple of youtube videos and articles for this revision
+- Struggled to do the matrix multiplication and tried understing einsum instead of transpose and matmul
+- Used AI for understanding einsum and spent more time understanding gradient calculations
+- Had backpropagation in bachelor's with manual calculations on paper, hence was comfortable doing on paper to avoid confusions
 
 ---
 
