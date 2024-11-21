@@ -54,8 +54,6 @@ if __name__ == "__main__":
     print(f"Test samples: {len(test_dataset)}")
     print(f"Final accuracy: {final_accuracy:.2f}%")
 
-    exit(0)
-
     ###########################################################################
     # Bound propagation
     ###########################################################################
