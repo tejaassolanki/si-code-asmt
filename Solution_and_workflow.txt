@@ -11,7 +11,7 @@ Task 1. Loading Data with Multi-Processing
 - Tried to understand modin and polars implementations but took quite some time
 - Knew about chunksize in pandas just went through the documentation again for syntax and confirmations
 - Skimmed through a few blogs and documentation of multiprocessing
-- In terms of testing, unit tests with pytest could have been written to ensure proper working of the methods. Different sorts of data (can be mocked) as edge cases could be used to verify the working.
+- In terms of testing, unit tests with pytest could have been written to ensure proper working of individual method(s). Different sorts of data (can be mocked) as edge cases could be used to verify the working.
 - Integration tests (to check for integrations) and performance testing (compare load times with single thread) can also be carried out.
 
 ---
