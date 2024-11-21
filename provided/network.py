@@ -211,6 +211,11 @@ class SimpleNeuralNetwork:
         )
         db1 = torch.mean(dA1, dim=0, keepdim=True)
 
+        # Gradient for input X
+        dX = einops.einsum(
+            self.W1, dA1, "output features, batches output -> batches features"
+        )
+
         # Update weights and biases
         self.W3 -= learning_rate * dW3
         self.b3 -= learning_rate * db3
@@ -218,5 +223,7 @@ class SimpleNeuralNetwork:
         self.b2 -= learning_rate * db2
         self.W1 -= learning_rate * dW1
         self.b1 -= learning_rate * db1
+
+        return dX, dA1, dA2, dZ3
 
         ########### END YOUR CODE  ############
