@@ -26,4 +26,8 @@ Task 2. Neural Network Implementation
 
 Task 3. Evaluating the Neural Network Output Bounds
 
+- The input tensor should be sliced to get the lower bounds and upper bounds separately
+- Compute the lower and upper bounds and then combine into a single tensor
+- The solution proposed by me seems way too easy which I am in doubt whether I have understood the problem
+- The solution more or less has to consider +ve and -ve values to calulcate upper and lower bounds
 

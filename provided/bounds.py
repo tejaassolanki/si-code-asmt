@@ -67,15 +67,27 @@ class IntervalBoundPropagation:
             output.shape  # (32, 4, 2)
         """
         batch_size, input_dim, _ = input_bounds.shape
-        out_dim = weights.shape[1]
+        output_dim = weights.shape[0]
 
         bounds_out = torch.empty(
-            (batch_size, out_dim, 2),
+            (batch_size, output_dim, 2),
             device="cpu",
             dtype=torch.float64,
         )
 
         ########### YOUR CODE HERE ############
+
+        # Separate lower and upper bounds
+        input_lower = input_bounds[:, :, 0]  # (batch_size, input_dim)
+        input_upper = input_bounds[:, :, 1]  # (batch_size, input_dim)
+
+        # Compute the linear pass
+        lower_bound = torch.einsum("bi,oi->bo", input_lower, weights) + bias
+        upper_bound = torch.einsum("bi,oi->bo", input_upper, weights) + bias
+
+        # Combine the bounds into a single tensor
+        bounds_out[:, :, 0] = lower_bound
+        bounds_out[:, :, 1] = upper_bound
 
         ########### END YOUR CODE  ############
 
