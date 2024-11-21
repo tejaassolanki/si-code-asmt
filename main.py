@@ -40,9 +40,7 @@ if __name__ == "__main__":
     # Train the network
     ###########################################################################
 
-    network = SimpleNeuralNetwork(
-        batch_size=32, input_dim=3, hidden_sizes=[4, 4], output_size=1
-    )
+    network = SimpleNeuralNetwork(input_dim=3, hidden_sizes=[4, 4], output_size=1)
 
     network.train(train_dataloader, epochs=2, batch_size=32, learning_rate=0.01)
 
