@@ -1,0 +1,22 @@
+Task 1. Loading Data with Multi-Processing
+
+- Need to use multiprocessing library that can spin up multiple processes in parallel to load the data
+- Had read about it earlier after looking at the job description so had some idea
+- The file on disk can be read in chunks lazily
+- A pool of processes based on the cpu count can process (conversion to tensors) these chunks
+- The obtained results can then be combined together
+- The chunk size is made as an optional parameter to ensure flexibility
+- Other approach could be to read the entire csv file without chunksize and then create chunks (as a list) ourselves following which it can be processed using pool of workers
+- Also tested modin and polars to notice that polars almost always is faster compared to a single thread loader
+- Tried to understand modin and polars implementations but took quite some time
+- Knew about chunksize in pandas just went through the documentation again for syntax and confirmations
+- Skimmed through a few blogs and documentation of multiprocessing
+
+---
+
+Task 2. Neural Network Implementation
+
+
+---
+
+Task 3. Evaluating the Neural Network Output Bounds
