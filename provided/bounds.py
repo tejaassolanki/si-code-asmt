@@ -61,7 +61,7 @@ class IntervalBoundPropagation:
             Given a network definition with input_dim=3 and an initial layer's weights:
 
             input_bounds.shape = (32, 3, 2)  # batch_size=32, input_dim=3
-            weights.shape = (3, 4)  # input_dim=3, output_dim=4
+            weights.shape = (4, 3)  # input_dim=3, output_dim=4
             bias.shape = (4,)  # output_dim=4
             output = propagate_bounds(input_bounds, weights, bias)
             output.shape  # (32, 4, 2)
@@ -83,12 +83,18 @@ class IntervalBoundPropagation:
 
         # Compute the linear pass
         # Can also use einops.einsum() in place of torch.einsum()
-        lower_bound = torch.einsum("bi,oi->bo", input_lower, weights) + bias
-        upper_bound = torch.einsum("bi,oi->bo", input_upper, weights) + bias
-
-        # Combine the bounds into a single tensor
-        bounds_out[:, :, 0] = lower_bound
-        bounds_out[:, :, 1] = upper_bound
+        for i in range(batch_size):
+            for j in range(output_dim):
+                lower_bound = upper_bound = bias[0][j]
+                for k in range(input_dim):
+                    if weights[j, k] >= 0:
+                        lower_bound += weights[j, k] * input_lower[i, k]
+                        upper_bound += weights[j, k] * input_upper[i, k]
+                    else:
+                        lower_bound += weights[j, k] * input_upper[i, k]
+                        upper_bound += weights[j, k] * input_lower[i, k]
+                bounds_out[i, j, 0] = lower_bound
+                bounds_out[i, j, 1] = upper_bound
 
         ########### END YOUR CODE  ############
 
